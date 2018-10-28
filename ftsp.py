@@ -39,7 +39,7 @@ class ftsp_client:
                     print("Address: {} Rank: {}".format(addr[0], msg))
 
     def send_rank(self):
-        print("Starting receiving broadcast")
+        print("Starting sending broadcast")
         self.my_rank = randint(1, 100)
         while len(self.rand_dict) <= 8:
             print("Sending data")
