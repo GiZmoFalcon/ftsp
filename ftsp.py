@@ -15,7 +15,6 @@ def get_ips():
         ip_addr=abc[netifaces.AF_INET][0]['addr']
         netmask=abc[netifaces.AF_INET][0]['netmask']
         bcast_ip=abc[netifaces.AF_INET][0]['broadcast']
-        print(ip_addr+"\n"+bcast_ip+"\n"+netmask)
         return ip_addr, bcast_ip
     except Exception:
         text = str(check_output(['ifconfig']))
@@ -32,7 +31,8 @@ class ftsp_client:
         self.bcast_soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.bcast_soc.bind(('', BCAST_PORT))
         self.rand_dict = {}
-        self.my_rank = None
+        self.my_rank = randint(1,100)
+        print('Host: {0}\nBcast IP: {1}\nRank: {2}'.format(self.host, self.bcast_ip, self.my_rank))
 
     def broadcast(self, message):
         self.bcast_soc.sendto(message.encode(), (self.bcast_ip, BCAST_PORT))
@@ -40,11 +40,11 @@ class ftsp_client:
     def receive_bcast(self):
         print("Starting receiving broadcast")
         while True:
+            print("Receiving data")
             msg, addr = self.bcast_soc.recvfrom(1024)
             msg = msg.decode()
             if 'r' in msg:
                 if addr[0] != self.host and addr[0] + ':' +str(addr[1]) not in self.rand_dict:
-                    print("Receiving data")
                     self.rand_dict[addr[0] + ':' +str(addr[1])] = int(msg[1:])
                     print("Address: {} Rank: {}".format(addr[0], msg))
 
@@ -55,7 +55,6 @@ class ftsp_client:
             print("Sending data")
             time.sleep(3)
             self.broadcast('r' + str(self.my_rank))
-            time.sleep(3)
             #print("Sending rank..., current list is"+str(self.rand_dict))
 
     def __del__(self):
