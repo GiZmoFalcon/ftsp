@@ -34,7 +34,7 @@ class ftsp_client:
         self.bcast_soc.bind(('', BCAST_PORT))
         h, m, s, ms = map(int, input('Enter reference time in HH MM SS MS: ').split(' '))
         self.timer = Tissot(h, m, s, ms)
-        self.timer.start()
+        Thread(target=self.timer.start).start()
         self.rand_dict = {}
         self.my_rank = randint(1,100)
         self.server_flag = None
