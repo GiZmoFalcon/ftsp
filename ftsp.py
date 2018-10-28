@@ -30,7 +30,6 @@ class ftsp_client:
     def receive_bcast(self):
         print("Starting receiving broadcast")
         while True:
-            print("Receving data")
             msg, addr = self.bcast_soc.recvfrom(1024)
             msg = msg.decode()
             if 'r' in msg:
@@ -45,6 +44,8 @@ class ftsp_client:
             print("Sending data")
             time.sleep(3)
             self.broadcast('r' + str(self.my_rank))
+            time.sleep(3)
+            #print("Sending rank..., current list is"+str(self.rand_dict))
 
     def __del__(self):
         self.bcast_soc.close()
