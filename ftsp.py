@@ -34,6 +34,7 @@ class ftsp_client:
             msg = msg.decode()
             if 'r' in msg:
                 if addr[0] != self.host and addr[0] + ':' +str(addr[1]) not in self.rand_dict:
+                    print("Receiving data")
                     self.rand_dict[addr[0] + ':' +str(addr[1])] = int(msg[1:])
                     print("Address: {} Rank: {}".format(addr[0], msg))
 
