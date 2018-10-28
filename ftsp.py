@@ -34,7 +34,7 @@ class ftsp_client:
             msg, addr = self.bcast_soc.recvfrom(1024)
             msg = msg.decode()
             if 'r' in msg:
-                if addr[0] != self.host and addr[0] not in self.rand_dict:
+                if addr[0] != self.host and addr[0] + ':' +str(addr[1]) not in self.rand_dict:
                     self.rand_dict[addr[0] + ':' +str(addr[1])] = int(msg[1:])
                     print("Address: {} Rank: {}".format(addr[0], msg))
 
