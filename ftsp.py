@@ -18,7 +18,7 @@ class ftsp_client:
         self.bcast_soc.bind(('', BCAST_PORT))
         self.rand_dict = {}
         self.host = get_host_ip()
-
+        #hello
     def broadcast(self, message):
         self.bcast_soc.sendto(message.encode(), (self.bcast_ip, BCAST_PORT))
 
