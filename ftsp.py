@@ -97,11 +97,16 @@ if __name__ == '__main__':
     Thread(target=client.receive_bcast).start()
     #rec_thr = thread.start_new_thread(client.receive_bcast, ())
     while True:
-        print(client.timer.check_time(),end='\r')
-        sys.stdout.write("\033[K")
         if client.server_flag:
             client.broadcast(client.timer.check_time())
             for i in range(5):
                 time.sleep(randint(1, 10))
+                print(client.timer.check_time(), end='\r')
+                sys.stdout.write("\033[K")
                 client.broadcast(client.timer.check_time())
             break
+        print(client.timer.check_time(), end='\r')
+        sys.stdout.write("\033[K")
+    while True:
+        print(client.timer.check_time(), end='\r')
+        sys.stdout.write("\033[K")
