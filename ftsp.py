@@ -50,11 +50,10 @@ class ftsp_client:
 
     def send_rank(self):
         print("Starting sending broadcast")
-        self.my_rank = randint(1, 100)
         while len(self.rand_dict) <= 8:
             print("Sending data")
-            time.sleep(3)
             self.broadcast('r' + str(self.my_rank))
+            time.sleep(3)
             #print("Sending rank..., current list is"+str(self.rand_dict))
 
     def __del__(self):
