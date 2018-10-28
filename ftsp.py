@@ -32,7 +32,7 @@ class ftsp_client:
         self.bcast_soc.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         self.bcast_soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.bcast_soc.bind(('', BCAST_PORT))
-        h, m, s, ms = map(int, input('Enter reference time in HH MM SS MS: '))
+        h, m, s, ms = map(int, input('Enter reference time in HH MM SS MS: ').split(' '))
         self.timer = Tissot(h, m, s, ms)
         self.timer.start()
         self.rand_dict = {}
