@@ -63,7 +63,7 @@ class Mote:
                 msg, addr = self.bcast_soc.recvfrom(1024)
                 msg = msg.decode()
 
-                if "Server" in msg:     # Discovery Reply
+                if "server" in msg:     # Discovery Reply
                     self.conn_soc.sendto(self.name.encode(), (addr[0], 5000))
                     self.server_address = addr[0]
                     print("Sending name to server with address {}".format(addr[0]))
