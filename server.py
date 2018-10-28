@@ -42,7 +42,7 @@ class Server:
     def broadcast(self, message):
         self.bcast_soc.sendto(message.encode(), (self.bcast_ip, 5000))
 
-    def discover(self):
+    '''def discover(self):
         print("Discovering...")
         try:
             self.broadcast("PING from server")
@@ -52,7 +52,7 @@ class Server:
                     self.clients_list[msg.decode()] = addr[0]
                     print("Client {0} with address {1} added to list".format(msg.decode(), addr[0]))
         except KeyboardInterrupt:
-            return
+            return'''
 
     def send_time(self):
         print("Sending time to receivers...")
@@ -76,7 +76,8 @@ class Server:
 
 if __name__ == '__main__':
     server = Server()
-    Thread(target=server.discover).start()
+    server.send_time()
+    #Thread(target=server.discover).start()
     Thread(target=server.beacon).start()
     print("Client\tAddress")
     [print("{0}\t{1}".format(key, value)) for key, value in server.clients_list.items()]

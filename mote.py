@@ -68,7 +68,7 @@ class Mote:
                     self.server_address = addr[0]
                     print("Sending name to server with address {}".format(addr[0]))
 
-                elif ":" in msg and "TimeSync" in msg:      # Timestamp sent by server
+                elif "TimeSync" in msg:      # Timestamp sent by server
                     msg = list(map(int, msg.rstrip()[0].split(":")))
                     self.timer = Tissot(msg[0], msg[1], msg[2], msg[3])
                     Thread(target=self.timer.start).start()
