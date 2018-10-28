@@ -47,7 +47,6 @@ class ftsp_client:
     def receive_bcast(self):
         print("Starting receiving broadcast")
         while True:
-            print("Receiving data")
             msg, addr = self.bcast_soc.recvfrom(1024)
             msg = msg.decode()
             if addr[0] != self.host:
@@ -66,8 +65,10 @@ class ftsp_client:
                 elif not self.server_flag:
                     msg = list(map(int, msg.split(":")))
                     if self.sync_count == 0:
+                        print("Resetting time")
                         self.timer.set_time(msg[0], msg[1], msg[2], msg[3])
                     else:
+                        print("Updating time")
                         time = [msg[idx] - val for idx, val in enumerate(self.timer.store_time())]
                         self.timer.update_time(time[0], time[1], time[2], time[3])
                     print(self.timer.check_time(), end="\r")
@@ -77,12 +78,11 @@ class ftsp_client:
     def is_server(self):
         if max([val for _, val in self.rand_dict.items()]) < self.my_rank:
             self.server_flag = True
-            self.broadcast('server %d' % self.my_rank)
+            self.broadcast('server {}'.format(self.my_rank))
 
     def send_rank(self):
         print("Starting sending broadcast")
         while len(self.rand_dict) <= 8:
-            print("Sending data")
             self.broadcast('r' + str(self.my_rank))
             time.sleep(3)
             #print("Sending rank..., current list is"+str(self.rand_dict))
