@@ -56,7 +56,7 @@ class Server:
 
     def send_time(self):
         print("Sending time to receivers...")
-        self.broadcast(self.timer.check_time() + "\nTimeSync")
+        self.broadcast(self.timer.check_time() + " TimeSync")
 
     def beacon(self):
         print("Sending beacons\n")
