@@ -3,10 +3,15 @@ from config import *
 from random import randint
 from threading import Thread
 import time
+import re
+from subprocess import check_output
+
 
 def get_host_ip():
-    return [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in
-[socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+    text = str(check_output(['ifconfig']))
+    m = re.findall(r'[w]\w+', text)
+    print(m)
+    return re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", str(check_output(['ifconfig', m[0]])))[0]
 
 
 class ftsp_client:
