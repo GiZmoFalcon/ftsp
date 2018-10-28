@@ -24,25 +24,26 @@ class ftsp_client:
         self.rand_dict = {}
         self.my_rank = None
 
-        #hello
     def broadcast(self, message):
         self.bcast_soc.sendto(message.encode(), (self.bcast_ip, BCAST_PORT))
 
     def receive_bcast(self):
-        print("afsf")
+        print("Starting receiving broadcast")
         while True:
+            print("Receving data")
             msg, addr = self.bcast_soc.recvfrom(1024)
             msg = msg.decode()
             if 'r' in msg:
-                if addr[0] != self.host:
+                if addr[0] != self.host and addr[0] not in self.rand_dict:
                     self.rand_dict[addr[0] + ':' +str(addr[1])] = int(msg[1:])
-                    #print("Address: {} Rank: {}".format(addr[0], msg))
-
+                    print("Address: {} Rank: {}".format(addr[0], msg))
 
     def send_rank(self):
-        print("hdh")
+        print("Starting receiving broadcast")
         self.my_rank = randint(1, 100)
         while len(self.rand_dict) <= 8:
+            print("Sending data")
+            time.sleep(3)
             self.broadcast('r' + str(self.my_rank))
 
     def __del__(self):
