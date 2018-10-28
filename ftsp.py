@@ -7,22 +7,22 @@ import re
 from subprocess import check_output
 
 
-def get_host_ip():
+def get_ips():
     text = str(check_output(['ifconfig']))
     m = re.findall(r'[w]\w+', text)
-    print(m)
-    return re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", str(check_output(['ifconfig', m[0]])))[0]
+    ips = re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", str(check_output(['ifconfig', m[0]])))
+    return ips[0], ips[2]
 
 
 class ftsp_client:
     def __init__(self):
-        self.bcast_ip = BCAST_IP
+        self.host, self.bcast_ip = get_ips()
         self.bcast_soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.bcast_soc.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         self.bcast_soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.bcast_soc.bind(('', BCAST_PORT))
         self.rand_dict = {}
-        self.host = get_host_ip()
+
         #hello
     def broadcast(self, message):
         self.bcast_soc.sendto(message.encode(), (self.bcast_ip, BCAST_PORT))
