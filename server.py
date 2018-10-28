@@ -76,8 +76,8 @@ class Server:
 
 if __name__ == '__main__':
     server = Server()
-    server.discover()
-    server.beacon()
+    Thread(target=server.discover).start()
+    Thread(target=server.beacon).start()
     print("Client\tAddress")
     [print("{0}\t{1}".format(key, value)) for key, value in server.clients_list.items()]
 
