@@ -30,11 +30,6 @@ class ftsp_client:
     def receive_bcast(self):
         print("Starting receiving broadcast")
         while True:
-<<<<<<< Updated upstream
-            print("Receving data")
-=======
-            #print("Receiving...")
->>>>>>> Stashed changes
             msg, addr = self.bcast_soc.recvfrom(1024)
             msg = msg.decode()
             if 'r' in msg:
