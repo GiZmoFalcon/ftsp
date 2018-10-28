@@ -22,6 +22,7 @@ class ftsp_client:
         self.bcast_soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.bcast_soc.bind(('', BCAST_PORT))
         self.rand_dict = {}
+        self.my_rank = None
 
         #hello
     def broadcast(self, message):
@@ -37,13 +38,12 @@ class ftsp_client:
                     self.rand_dict[addr[0] + ':' +str(addr[1])] = int(msg[1:])
                     #print("Address: {} Rank: {}".format(addr[0], msg))
 
+
     def send_rank(self):
         print("hdh")
-        while not self.rand_dict:
-            time.sleep(3)
-            my_rank = randint(1, 100)
-            print(self.rand_dict)
-            self.broadcast('r' + str(my_rank))
+        self.my_rank = randint(1, 100)
+        while len(self.rand_dict) <= 8:
+            self.broadcast('r' + str(self.my_rank))
 
     def __del__(self):
         self.bcast_soc.close()
