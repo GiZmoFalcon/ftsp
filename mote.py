@@ -52,7 +52,7 @@ class Mote:
         self.conn_soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.conn_soc.bind(('', 5000))
         self.server_address = ""
-        self.timer = Tissot()
+        self.timer = None
         self.pr_bcast_time = None
         self.beacon_count = 0
         self.offset = defaultdict(int)
@@ -100,10 +100,10 @@ class Mote:
                     else:
                         present_time = present_time + timedelta(milliseconds=self.offset[addr[0]])
 
-                    present_time = list(map(int, str(present_time.strftime('%H:%M:%S:%f')).split(":")))
+                    present_time = list(map(int, str(present_time.strftime('%H %M %S %f')).split(" ")))
                     present_time[3] = int(present_time[3]/1000)
                     # Updating timer
-                    self.timer.set_time(int(present_time[0]), int(present_time[1]), present_time[2], present_time[3])
+                    self.timer.update_time(int(present_time[0]), int(present_time[1]), present_time[2], present_time[3])
                     print("Timer updated from address {}".format(addr[0]))
 
         except KeyboardInterrupt:
