@@ -17,10 +17,11 @@ def time_difference(time_1, time_2):    # To subtract 2 timestamps and convert t
     if time_1 < time_2:
         time_1 += timedelta(days=1)
         i = -1
-    return (time_1 - time_2).total_seconds() * 1000 * i
+    return int((time_1 - time_2).total_seconds() * 1000 * i)
+
 
 def millisec2stamp(ms):     # To convert milliseconds to [hh, mm, ss, ms]
-    return list(map(int, datetime.fromtimestamp(ms/1000).strftime("%H %M %S %f").split(" ")))
+    return datetime.fromtimestamp(ms/1000).strftime("%H:%M:%S:%f")
 
 
 def get_ips():
@@ -61,6 +62,7 @@ class Mote:
         self.bcast_soc.sendto(message.encode(), (self.bcast_ip, 5000))
 
     def bcast_receive(self):
+        FMT = '%H:%M:%S:%f'
         try:
             while True:
                 if self.timer_started:
@@ -80,7 +82,6 @@ class Mote:
                     Thread(target=self.timer.start).start()
                     self.timer_started = True
                     print("Timer started".format(self.beacon_count), end="\r")
-                    sys.stdout.write("\033[K")
 
                 elif "beacon" in msg:       # Beacon sent by server
                     self.beacon_count += 1
@@ -93,19 +94,16 @@ class Mote:
                     time_diff = time_difference(self.pr_bcast_time, time2)/2  # Halved to reduce offset variation
                     self.offset[addr[0]] = ((self.beacon_count - 1) * self.offset[addr[0]] + time_diff) / \
                                             self.beacon_count  # Offset calculation formula
-
+                    present_time = datetime.strptime(self.timer.check_time(), FMT)
                     if self.offset[addr[0]] < 0:
-                        i = -1
-
+                        present_time = present_time - timedelta(milliseconds=self.offset[addr[0]])
                     else:
-                        i = 1
+                        present_time = present_time + timedelta(milliseconds=self.offset[addr[0]])
 
-                    time2 = millisec2stamp(abs(self.offset[addr[0]]))
-                    present_time = [k+i*time2[j] for j, k in enumerate(self.timer.store_time())]
+                    present_time = str(present_time).split(":")
                     # Updating timer
                     self.timer.set_time(present_time[0], present_time[1], present_time[2], present_time[3])
-                    print("Timer updated from address {}".format(addr[0]), end="\r")
-                    sys.stdout.write("\033[K")
+                    print("Timer updated from address {}".format(addr[0]))
 
         except KeyboardInterrupt:
             return
