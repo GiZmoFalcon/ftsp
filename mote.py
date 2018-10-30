@@ -94,7 +94,7 @@ class Mote:
                                             self.beacon_count)  # Offset calculation formula
                     present_time = datetime.strptime(self.timer.check_time(), FMT)
                     if self.offset[addr[0]] < 0:
-                        present_time = present_time - timedelta(milliseconds=self.offset[addr[0]])
+                        present_time = present_time - timedelta(milliseconds=abs(self.offset[addr[0]]))
                     else:
                         present_time = present_time + timedelta(milliseconds=self.offset[addr[0]])
                     present_time = list(map(int, str(present_time.strftime('%H %M %S %f')).split(" ")))
