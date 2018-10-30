@@ -79,7 +79,7 @@ class Tissot:
         }[choice]
 
     def store_time(self):
-        return self.Hours, self.Minutes, self.Seconds, self.MilliSeconds
+        return [self.Hours, self.Minutes, self.Seconds, self.MilliSeconds]
 
 
 # def store_time(self):

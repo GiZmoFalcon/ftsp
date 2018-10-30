@@ -82,27 +82,23 @@ class Mote:
 
                 elif "beacon" in msg:       # Beacon sent by server
                     self.beacon_count += 1
-                    self.pr_bcast_time = list(self.timer.store_time())
+                    self.pr_bcast_time = self.timer.store_time()
                     self.broadcast(":".join(list(map(str, self.pr_bcast_time))))    # Broadcasting beacon received time
                     print("Beacon no. {} received".format(self.beacon_count))
 
                 elif addr[0] != self.host:  # Broadcast received from another mote
                     time2 = list(map(int, msg.split(":")))
-
+                    print(time2)
                     time_diff = time_difference(self.pr_bcast_time, time2)
-                    print(time_diff)
                     self.offset[addr[0]] = int(((self.beacon_count - 1) * self.offset[addr[0]] + time_diff) / \
                                             self.beacon_count)  # Offset calculation formula
-                    print(self.offset[addr[0]])
                     present_time = datetime.strptime(self.timer.check_time(), FMT)
                     if self.offset[addr[0]] < 0:
                         present_time = present_time - timedelta(milliseconds=self.offset[addr[0]]/2)
                     else:
                         present_time = present_time + timedelta(milliseconds=self.offset[addr[0]]/2)
-
                     present_time = list(map(int, str(present_time.strftime('%H %M %S %f')).split(" ")))
                     present_time[3] = int(present_time[3]/1000)
-                    print(present_time)
                     # Updating timer
                     self.timer.set_time(present_time[0], present_time[1], present_time[2], present_time[3])
                     print("Timer updated from address {}".format(addr[0]))
