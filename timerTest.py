@@ -91,9 +91,7 @@ def main():
     print("Out!")
     while True:
         print(timerC.check_time(), end="\r")
-        print("\n\nIN")
         sys.stdout.write("\033[K")
-        print("\n\nIN")
         pass
 
 
