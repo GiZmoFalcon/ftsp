@@ -17,8 +17,8 @@ def time_difference(time_1, time_2):    # To subtract 2 timestamps and convert t
     time = time_2 - time_1
     i = -1
     if time_1 > time_2:
-        return int((time_1 - time_2).total_seconds() * 1000 * -1)
-    return int((time_1 - time_2).total_seconds() * 1000)
+        return int((time_1 - time_2).total_seconds() * 1000)
+    return int((time_2 - time_1).total_seconds() * -1000)
 
 
 def millisec2stamp(ms):     # To convert milliseconds to [hh, mm, ss, ms]
