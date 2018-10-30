@@ -13,10 +13,10 @@ def time_difference(time_1, time_2):    # To subtract 2 timestamps and convert t
     FMT = '%H:%M:%S:%f'
     time_1 = datetime.strptime(time_1, FMT)
     time_2 = datetime.strptime(time_2, FMT)
-    i = 1
+    i = -1
     if time_1 < time_2:
         time_1 += timedelta(days=1)
-        i = -1
+        i = 1
     return int((time_1 - time_2).total_seconds() * 1000 * i)
 
 
