@@ -9,8 +9,6 @@ from subprocess import check_output
 
 
 def time_difference(time_1, time_2):    # To subtract 2 timestamps and convert them to milliseconds
-    time_1[3] *= 1000
-    time_2[3] *= 1000
     time_1, time_2 = ':'.join(list(map(str, time_1))), ':'.join(list(map(str, time_2)))
     FMT = '%H:%M:%S:%f'
     time_1 = datetime.strptime(time_1, FMT)
@@ -90,9 +88,12 @@ class Mote:
 
                 elif addr[0] != self.host:  # Broadcast received from another mote
                     time2 = list(map(int, msg.split(":")))
+
                     time_diff = time_difference(self.pr_bcast_time, time2)
+                    print(time_diff)
                     self.offset[addr[0]] = ((self.beacon_count - 1) * self.offset[addr[0]] + time_diff) / \
                                             self.beacon_count  # Offset calculation formula
+                    print(self.offset[addr[0]])
                     present_time = datetime.strptime(self.timer.check_time(), FMT)
                     if self.offset[addr[0]] < 0:
                         present_time = present_time - timedelta(milliseconds=self.offset[addr[0]]/2)
