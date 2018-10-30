@@ -67,9 +67,6 @@ class Mote:
         FMT = '%H:%M:%S:%f'
         try:
             while True:
-                if self.timer_started:
-                    print(self.timer.check_time(), end="\r")
-                    sys.stdout.write("\033[K")
                 msg, addr = self.bcast_soc.recvfrom(1024)
                 msg = msg.decode()
 
