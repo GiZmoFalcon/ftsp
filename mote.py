@@ -93,20 +93,20 @@ class Mote:
 
                 elif addr[0] != self.host:  # Broadcast received from another mote
                     time2 = list(map(int, msg.split(":")))
-                    time_diff = time_difference(self.pr_bcast_time, time2)/2  # Halved to reduce offset variation
+                    time_diff = time_difference(self.pr_bcast_time, time2)
                     self.offset[addr[0]] = ((self.beacon_count - 1) * self.offset[addr[0]] + time_diff) / \
                                             self.beacon_count  # Offset calculation formula
                     present_time = datetime.strptime(self.timer.check_time(), FMT)
                     if self.offset[addr[0]] < 0:
-                        present_time = present_time - timedelta(milliseconds=self.offset[addr[0]])
+                        present_time = present_time - timedelta(milliseconds=self.offset[addr[0]]/2)
                     else:
-                        present_time = present_time + timedelta(milliseconds=self.offset[addr[0]])
+                        present_time = present_time + timedelta(milliseconds=self.offset[addr[0]]/2)
 
                     present_time = list(map(int, str(present_time.strftime('%H %M %S %f')).split(" ")))
                     print(present_time)
                     present_time[3] = int(present_time[3]/1000)
                     # Updating timer
-                    self.timer.update_time(present_time[0], present_time[1], present_time[2], present_time[3])
+                    self.timer.set_time(present_time[0], present_time[1], present_time[2], present_time[3])
                     print("Timer updated from address {}".format(addr[0]))
 
         except KeyboardInterrupt:
