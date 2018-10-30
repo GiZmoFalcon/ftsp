@@ -87,7 +87,7 @@ class Mote:
 
                 elif "beacon" in msg:       # Beacon sent by server
                     self.beacon_count += 1
-                    self.pr_bcast_time = self.timer.store_time()
+                    self.pr_bcast_time = list(self.timer.store_time())
                     self.broadcast(":".join(list(map(str, self.pr_bcast_time))))    # Broadcasting beacon received time
                     print("Beacon no. {} received".format(self.beacon_count))
 
