@@ -59,6 +59,12 @@ class Mote:
         self.offset = defaultdict(int)
         self.timer_started = False
 
+    def print_thread(self):
+        while True:
+            if self.timer_started:
+                print(self.timer.check_time(), end='\r')
+                sys.stdout.write("\033[K")
+
     def broadcast(self, message):
         self.bcast_soc.sendto(message.encode(), (self.bcast_ip, 5000))
 
@@ -108,4 +114,5 @@ class Mote:
 
 if __name__ == '__main__':
     mote = Mote(input("Enter client's name:"))
+    Thread(target=mote.print_thread).start()
     mote.bcast_receive()
