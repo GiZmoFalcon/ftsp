@@ -101,7 +101,7 @@ class Mote:
                         present_time = present_time + timedelta(milliseconds=self.offset[addr[0]])
 
                     present_time = str(present_time).split(":")
-                    temp = present_time[3].split('.')
+                    temp = present_time[2].split('.')
                     present_time[2] = int(temp[0])
                     present_time.append(int(int(temp[1])/1000))
                     print(len(present_time))
