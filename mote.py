@@ -100,11 +100,8 @@ class Mote:
                     else:
                         present_time = present_time + timedelta(milliseconds=self.offset[addr[0]])
 
-                    present_time = str(present_time).split(":")
-                    temp = present_time[2].split('.')
-                    present_time[2] = int(temp[0])
-                    present_time.append(int(int(temp[1])/1000))
-                    print(len(present_time))
+                    present_time = list(map(int, str(present_time.strftime('%H:%M:%S:%f')).split(":")))
+                    present_time[3] = int(present_time[3]/1000)
                     # Updating timer
                     self.timer.set_time(int(present_time[0]), int(present_time[1]), present_time[2], present_time[3])
                     print("Timer updated from address {}".format(addr[0]))
