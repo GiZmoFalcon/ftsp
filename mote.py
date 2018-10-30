@@ -52,7 +52,7 @@ class Mote:
         self.conn_soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.conn_soc.bind(('', 5000))
         self.server_address = ""
-        self.timer = None
+        self.timer = Tissot()
         self.pr_bcast_time = None
         self.beacon_count = 0
         self.offset = defaultdict(int)
