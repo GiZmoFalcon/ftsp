@@ -9,6 +9,8 @@ from subprocess import check_output
 
 
 def time_difference(time_1, time_2):    # To subtract 2 timestamps and convert them to milliseconds
+    time_1[3] *= 1000
+    time_2[3] *= 1000
     time_1, time_2 = ':'.join(list(map(str, time_1))), ':'.join(list(map(str, time_2)))
     FMT = '%H:%M:%S:%f'
     time_1 = datetime.strptime(time_1, FMT)
