@@ -91,8 +91,8 @@ class Mote:
 
                     time_diff = time_difference(self.pr_bcast_time, time2)
                     print(time_diff)
-                    self.offset[addr[0]] = ((self.beacon_count - 1) * self.offset[addr[0]] + time_diff) / \
-                                            self.beacon_count  # Offset calculation formula
+                    self.offset[addr[0]] = int(((self.beacon_count - 1) * self.offset[addr[0]] + time_diff) / \
+                                            self.beacon_count)  # Offset calculation formula
                     print(self.offset[addr[0]])
                     present_time = datetime.strptime(self.timer.check_time(), FMT)
                     if self.offset[addr[0]] < 0:
